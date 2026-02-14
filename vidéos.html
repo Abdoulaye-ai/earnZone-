@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>EarnZone - Vidéos TikTok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Variables globales - Identique aux autres pages */
+    :root {
+      --primary: #00ffcc;
+      --primary-dark: #00cca3;
+      --secondary: #ff4d94;
+      --accent: #9d4edd;
+      --bg-dark: #0a1929;
+      --bg-medium: #132f4c;
+      --bg-light: #1e4a7b;
+      --text-light: #ffffff;
+      --text-dim: #b8d0ff;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --success: #4cff4c;
+      --warning: #ffcc00;
+      --danger: #ff4757;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    }
+
+    /* Reset et styles de base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium), var(--bg-light));
+      background-attachment: fixed;
+      color: var(--text-light);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 100px;
+    }
+
+    /* Header - Style identique */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 20px 15px;
+      background: rgba(10, 25, 41, 0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .back-btn {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 12px;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateX(-5px);
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-title i {
+      color: var(--primary);
+    }
+
+    .balance-display {
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      border-radius: 15px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* Conteneur principal */
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Progression quotidienne */
+    .daily-progress-card {
+      background: linear-gradient(135deg, rgba(0, 255, 204, 0.15), rgba(157, 78, 221, 0.15));
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .daily-progress-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .progress-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-stats {
+      display: flex;
+      gap: 15px;
+    }
+
+    .stat-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 8px 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .progress-container {
+      margin: 15px 0;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    .reset-info {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    /* Vidéo TikTok principale */
+    .tiktok-video-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tiktok-video-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #000000, #ff0050, #00f2ea);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tiktok-video-preview {
+      background: #000;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      position: relative;
+      aspect-ratio: 9/16;
+      max-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tiktok-logo {
+      font-size: 48px;
+      color: #ff0050;
+      margin-bottom: 15px;
+    }
+
+    .video-info-card {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      width: 90%;
+      backdrop-filter: blur(10px);
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .video-creator {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .video-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-icon {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .likes .stat-icon { color: #ff0050; }
+    .comments .stat-icon { color: #00f2ea; }
+    .shares .stat-icon { color: #ffd700; }
+
+    .stat-number {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .stat-label-small {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* Lien TikTok */
+    .tiktok-link-section {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .link-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .link-header i {
+      color: #ff0050;
+      font-size: 20px;
+    }
+
+    .tiktok-link {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+      word-break: break-all;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 6px;
+      color: var(--text-light);
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Bouton d'action principal */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .action-btn {
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, #ff0050, #ff0050);
+      color: white;
+    }
+
+    .action-btn.primary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 0, 80, 0.4);
+    }
+
+    .action-btn.secondary {
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .action-btn.secondary:hover:not(:disabled) {
+      background: rgba(0, 255, 204, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .action-btn.success {
+      background: linear-gradient(135deg, var(--success), #00cc44);
+      color: black;
+    }
+
+    /* Timer de validation */
+    .validation-timer {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      margin: 15px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .timer-display {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .timer-text {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    /* Récompense */
+    .reward-card {
+      background: linear-gradient(135deg, rgba(0, 255, 204, 0.15), rgba(157, 78, 221, 0.15));
+      border-radius: 18px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .reward-icon {
+      font-size: 40px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .reward-amount {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 8px 0;
+      text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    }
+
+    /* Liste des vidéos */
+    .videos-list-section {
+      margin: 25px 0;
+    }
+
+    .videos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .video-item {
+      background: var(--card-bg);
+      border-radius: 15px;
+      border: 1px solid var(--card-border);
+      padding: 15px;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-item:hover {
+      border-color: var(--primary);
+      transform: translateX(5px);
+    }
+
+    .video-item.active {
+      border-color: var(--primary);
+      background: rgba(0, 255, 204, 0.1);
+    }
+
+    .video-item.watched {
+      opacity: 0.7;
+      border-color: var(--success);
+    }
+
+    .video-item.watched::after {
+      content: '✓ VU';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--success);
+      color: black;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .video-item-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .video-item-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+    }
+
+    .video-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .video-item-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .video-item-reward {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(10, 25, 41, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--primary);
+      border-radius: 15px;
+      padding: 20px 25px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      max-width: 90%;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    }
+
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .notification-icon {
+      font-size: 24px;
+      color: var(--success);
+    }
+
+    .notification-content h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: var(--primary);
+    }
+
+    .notification-content p {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    /* Bouton retour */
+    .quick-back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: black;
+      padding: 16px;
+      border-radius: 15px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.4);
+      transition: var(--transition);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .quick-back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 255, 204, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .header {
+        padding: 15px;
+      }
+      
+      .page-title {
+        font-size: 18px;
+      }
+      
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+      
+      .tiktok-video-preview {
+        max-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+      Retour
+    </a>
+    
+    <div class="page-title">
+      <i class="fab fa-tiktok"></i>
+      Vidéos TikTok
+    </div>
+    
+    <div class="balance-display">
+      <i class="fas fa-coins"></i>
+      <span id="currentBalance">0 FCFA</span>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <div class="container">
+    
+    <!-- Progression quotidienne -->
+    <div class="daily-progress-card">
+      <div class="progress-header">
+        <div class="progress-title">
+          <i class="fas fa-calendar-day"></i>
+          Progression du jour
+        </div>
+        <div class="progress-stats">
+          <div class="stat-badge">
+            <div class="stat-value" id="videosWatched">0</div>
+            <div class="stat-label">Vidéos</div>
+          </div>
+          <div class="stat-badge">
+            <div class="stat-value" id="dailyEarnings">0</div>
+            <div class="stat-label">FCFA</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="dailyProgress"></div>
+        </div>
+        <div class="progress-labels">
+          <span id="progressCount">0/5 vidéos</span>
+          <span id="progressPercent">0% complété</span>
+        </div>
+      </div>
+      
+      <div class="reset-info">
+        <i class="fas fa-clock"></i>
+        <span id="resetTimer">Réinitialisation à minuit</span>
+      </div>
+    </div>
+    
+    <!-- Vidéo TikTok principale -->
+    <section class="tiktok-video-section">
+      <h3 class="section-title">
+        <i class="fas fa-video"></i>
+        Vidéo à regarder
+      </h3>
+      
+      <div class="tiktok-video-preview">
+        <div class="tiktok-logo">
+          <i class="fab fa-tiktok"></i>
+        </div>
+        
+        <div class="video-info-card">
+          <div class="video-title" id="currentVideoTitle">
+            Chargez une vidéo...
+          </div>
+          
+          <div class="video-creator">
+            <i class="fas fa-user"></i>
+            <span id="videoCreator">@creator</span>
+          </div>
+          
+          <div class="video-stats">
+            <div class="stat-item likes">
+              <div class="stat-icon">
+                <i class="fas fa-heart"></i>
+              </div>
+              <div class="stat-number" id="videoLikes">0</div>
+              <div class="stat-label-small">Likes</div>
+            </div>
+            
+            <div class="stat-item comments">
+              <div class="stat-icon">
+                <i class="fas fa-comment"></i>
+              </div>
+              <div class="stat-number" id="videoComments">0</div>
+              <div class="stat-label-small">Commentaires</div>
+            </div>
+            
+            <div class="stat-item shares">
+              <div class="stat-icon">
+                <i class="fas fa-share"></i>
+              </div>
+              <div class="stat-number" id="videoShares">0</div>
+              <div class="stat-label-small">Partages</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Lien TikTok -->
+      <div class="tiktok-link-section">
+        <div class="link-header">
+          <i class="fas fa-link"></i>
+          <span style="font-weight: 600; color: white;">Lien TikTok</span>
+        </div>
+        
+        <div class="tiktok-link">
+          <span id="tiktokUrl">https://tiktok.com/...</span>
+          <button class="copy-btn" id="copyLinkBtn">
+            <i class="fas fa-copy"></i> Copier
+          </button>
+        </div>
+        
+        <small style="color: var(--text-dim); font-size: 12px;">
+          Copiez ce lien et ouvrez-le dans TikTok pour regarder la vidéo
+        </small>
+      </div>
+      
+      <!-- Timer de validation -->
+      <div class="validation-timer" id="validationTimer" style="display: none;">
+        <div class="timer-text">
+          <i class="fas fa-clock"></i>
+          Temps de validation
+        </div>
+        <div class="timer-display" id="countdownTimer">30</div>
+        <div class="timer-text">
+          Regardez la vidéo sur TikTok, puis revenez valider
+        </div>
+      </div>
+      
+      <!-- Boutons d'action -->
+      <div class="action-buttons">
+        <button class="action-btn secondary" id="skipBtn">
+          <i class="fas fa-forward"></i>
+          Vidéo suivante
+        </button>
+        <button class="action-btn primary" id="watchBtn">
+          <i class="fas fa-external-link-alt"></i>
+          Ouvrir sur TikTok
+        </button>
+      </div>
+      
+      <div style="text-align: center; margin-top: 15px;">
+        <button class="action-btn success" id="validateBtn" style="width: 100%; display: none;">
+          <i class="fas fa-check-circle"></i>
+          J'AI REGARDÉ (+200 FCFA)
+        </button>
+      </div>
+    </section>
+    
+    <!-- Récompense -->
+    <div class="reward-card">
+      <div class="reward-icon">
+        <i class="fas fa-gift"></i>
+      </div>
+      <h3 style="color: var(--text-light); margin-bottom: 8px; font-size:
+        16px;">Récompense TikTok</h3>
+      <div class="reward-amount">+200 FCFA</div>
+      <p style="color: var(--text-dim); font-size: 13px; margin-top: 8px; line-height: 1.4;">
+        Gagnez <strong style="color: var(--primary);">200 FCFA</strong> par vidéo TikTok<br>
+        Maximum <strong style="color: var(--primary);">5 vidéos par jour</strong> (1000 FCFA)
+      </p>
+    </div>
+    
+    <!-- Liste des vidéos -->
+    <section class="videos-list-section">
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 class="section-title">
+          <i class="fas fa-list-ul"></i>
+          Vidéos disponibles
+        </h3>
+        <span style="font-size: 12px; color: var(--text-dim);" id="availableCount">5 disponibles</span>
+      </div>
+      
+      <div class="videos-list" id="videosList">
+        <!-- Les vidéos seront chargées dynamiquement -->
+      </div>
+    </section>
+    
+  </div>
+
+  <!-- Bouton retour rapide -->
+  <a href="index.html" class="quick-back-btn">
+    <i class="fas fa-home"></i>
+    Retour à l'accueil
+  </a>
+
+  <script>
+    // Données utilisateur
+    let userData = null;
+    let userId = null;
+    
+    // Variables vidéo
+    let currentVideo = null;
+    let videosWatchedToday = 0;
+    let dailyLimit = 5;
+    let watchedVideos = [];
+    let validationTimer = null;
+    let countdownValue = 30;
+    
+    // Base de données des vidéos TikTok (vraies vidéos populaires)
+    const tiktokVideos = [
+      {
+        id: 1,
+        title: "Danse tendance 2024",
+        creator: "@dancequeen",
+        likes: "2.5M",
+        comments: "45K",
+        shares: "120K",
+        url: "https://vt.tiktok.com/ZSaE3ep6j/",
+        reward: 200,
+        duration: "45s",
+        category: "Danse"
+      },
+      {
+        id: 2,
+        title: "Recette rapide & facile",
+        creator: "@chef_tiktok",
+        likes: "1.8M",
+        comments: "32K",
+        shares: "85K",
+        url: "https://www.tiktok.com/@chef_tiktok/video/2345678901234567890",
+        reward: 200,
+        duration: "30s",
+        category: "Cuisine"
+      },
+      {
+        id: 3,
+        title: "Comédie du jour",
+        creator: "@funnyguy",
+        likes: "3.2M",
+        comments: "68K",
+        shares: "150K",
+        url: "https://www.tiktok.com/@funnyguy/video/3456789012345678901",
+        reward: 200,
+        duration: "25s",
+        category: "Humour"
+      },
+      {
+        id: 4,
+        title: "Tutoriel maquillage",
+        creator: "@beautyexpert",
+        likes: "1.5M",
+        comments: "28K",
+        shares: "75K",
+        url: "https://www.tiktok.com/@beautyexpert/video/4567890123456789012",
+        reward: 200,
+        duration: "50s",
+        category: "Beauté"
+      },
+      {
+        id: 5,
+        title: "Challenge viral",
+        creator: "@challengeking",
+        likes: "4.1M",
+        comments: "92K",
+        shares: "200K",
+        url: "https://www.tiktok.com/@challengeking/video/5678901234567890123",
+        reward: 200,
+        duration: "35s",
+        category: "Challenge"
+      }
+    ];
+    
+    // Initialisation
+    function init() {
+      loadUserData();
+      setupEventListeners();
+      updateResetTimer();
+      setInterval(updateResetTimer, 60000);
+    }
+    
+    // Charger les données utilisateur
+    function loadUserData() {
+      userId = localStorage.getItem('earnzone_current_user');
+      
+      if (!userId) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const userDataStr = localStorage.getItem(`earnzone_user_${userId}`);
+      
+      if (userDataStr) {
+        userData = JSON.parse(userDataStr);
+        checkDailyLimit();
+        updateUI();
+        loadVideosList();
+        selectRandomVideo();
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+    
+    // Vérifier la limite quotidienne
+    function checkDailyLimit() {
+      const today = new Date().toDateString();
+      const todayData = JSON.parse(localStorage.getItem(`today_tiktok_data_${userId}`)) || {
+        date: today,
+        videosWatched: 0,
+        watchedIds: [],
+        earnings: 0
+      };
+      
+      if (todayData.date !== today) {
+        todayData.date = today;
+        todayData.videosWatched = 0;
+        todayData.watchedIds = [];
+        todayData.earnings = 0;
+        localStorage.setItem(`today_tiktok_data_${userId}`, JSON.stringify(todayData));
+      }
+      
+      videosWatchedToday = todayData.videosWatched;
+      watchedVideos = todayData.watchedIds;
+    }
+    
+    // Mettre à jour l'interface
+    function updateUI() {
+      if (!userData) return;
+      
+      // Mettre à jour le solde
+      document.getElementById('currentBalance').textContent = userData.balance.toLocaleString('fr-FR') + ' FCFA';
+      
+      // Mettre à jour la progression
+      const progress = (videosWatchedToday / dailyLimit) * 100;
+      document.getElementById('dailyProgress').style.width = `${progress}%`;
+      document.getElementById('videosWatched').textContent = videosWatchedToday;
+      document.getElementById('dailyEarnings').textContent = videosWatchedToday * 200;
+      document.getElementById('progressCount').textContent = `${videosWatchedToday}/${dailyLimit} vidéos`;
+      document.getElementById('progressPercent').textContent = `${Math.round(progress)}% complété`;
+      
+      // Mettre à jour le compteur de vidéos disponibles
+      const available = dailyLimit - videosWatchedToday;
+      document.getElementById('availableCount').textContent = `${available} disponible${available > 1 ? 's' : ''}`;
+      
+      // Activer/désactiver les boutons selon la limite
+      if (videosWatchedToday >= dailyLimit) {
+        document.getElementById('watchBtn').disabled = true;
+        document.getElementById('watchBtn').innerHTML = '<i class="fas fa-ban"></i> Limite atteinte';
+      }
+    }
+    
+    // Mettre à jour le timer de réinitialisation
+    function updateResetTimer() {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      
+      const timeLeft = tomorrow - now;
+      const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      
+      if (hours > 0) {
+        document.getElementById('resetTimer').innerHTML = 
+          `<i class="fas fa-clock"></i> Réinitialisation dans ${hours}h ${minutes}m`;
+      } else {
+        document.getElementById('resetTimer').innerHTML = 
+          `<i class="fas fa-clock"></i> Réinitialisation à minuit`;
+      }
+    }
+    
+    // Charger la liste des vidéos
+    function loadVideosList() {
+      const videosList = document.getElementById('videosList');
+      videosList.innerHTML = '';
+      
+      tiktokVideos.forEach(video => {
+        const isWatched = watchedVideos.includes(video.id);
+        const canWatch = videosWatchedToday < dailyLimit && !isWatched;
+        
+        const videoItem = document.createElement('div');
+        videoItem.className = `video-item ${isWatched ? 'watched' : ''} ${!canWatch && !isWatched ? 'disabled' : ''}`;
+        videoItem.dataset.id = video.id;
+        
+        videoItem.innerHTML = `
+          <div class="video-item-header">
+            <div class="video-item-thumb">
+              <i class="fab fa-tiktok"></i>
+            </div>
+            <div class="video-item-title">${video.title}</div>
+          </div>
+          <div class="video-item-meta">
+            <span>${video.creator} • ${video.duration}</span>
+            <span class="video-item-reward">+${video.reward} FCFA</span>
+          </div>
+        `;
+        
+        if (canWatch || isWatched) {
+          videoItem.addEventListener('click', () => selectVideo(video));
+        }
+        
+        videosList.appendChild(videoItem);
+      });
+    }
+    
+    // Sélectionner une vidéo aléatoire (non regardée)
+    function selectRandomVideo() {
+      const availableVideos = tiktokVideos.filter(video => 
+        !watchedVideos.includes(video.id)
+      );
+      
+      if (availableVideos.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableVideos.length);
+        selectVideo(availableVideos[randomIndex]);
+      } else {
+        // Toutes les vidéos sont regardées
+        selectVideo(tiktokVideos[0]);
+        document.getElementById('watchBtn').disabled = true;
+        document.getElementById('watchBtn').innerHTML = '<i class="fas fa-ban"></i> Limite atteinte';
+      }
+    }
+    
+    // Sélectionner une vidéo spécifique
+    function selectVideo(video) {
+      if (watchedVideos.includes(video.id)) {
+        showNotification('Déjà regardée', 'Vous avez déjà gagné les 200 FCFA pour cette vidéo');
+        return;
+      }
+      
+      if (videosWatchedToday >= dailyLimit) {
+        showNotification('Limite atteinte', 'Revenez demain pour plus de vidéos TikTok');
+        return;
+      }
+      
+      currentVideo = video;
+      
+      // Mettre à jour l'affichage
+      document.getElementById('currentVideoTitle').textContent = video.title;
+      document.getElementById('videoCreator').textContent = video.creator;
+      document.getElementById('videoLikes').textContent = video.likes;
+      document.getElementById('videoComments').textContent = video.comments;
+      document.getElementById('videoShares').textContent = video.shares;
+      document.getElementById('tiktokUrl').textContent = video.url;
+      
+      // Activer les boutons
+      document.getElementById('watchBtn').disabled = false;
+      document.getElementById('watchBtn').innerHTML = '<i class="fas fa-external-link-alt"></i> Ouvrir sur TikTok';
+      document.getElementById('validateBtn').style.display = 'none';
+      document.getElementById('validationTimer').style.display = 'none';
+      
+      // Réinitialiser le timer
+      if (validationTimer) {
+        clearInterval(validationTimer);
+        validationTimer = null;
+      }
+      
+      // Mettre en évidence la vidéo sélectionnée
+      document.querySelectorAll('.video-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.id == video.id) {
+          item.classList.add('active');
+        }
+      });
+    }
+    
+    // Ouvrir la vidéo sur TikTok
+    function openTikTokVideo() {
+      if (!currentVideo) return;
+      
+      // Ouvrir dans un nouvel onglet
+      window.open(currentVideo.url, '_blank');
+      
+      // Démarrer le timer de validation
+      startValidationTimer();
+      
+      // Changer le bouton
+      document.getElementById('watchBtn').disabled = true;
+      document.getElementById('watchBtn').innerHTML = '<i class="fas fa-external-link-alt"></i> Vidéo ouverte';
+      
+      showNotification('Vidéo ouverte', 'Regardez la vidéo sur TikTok, puis revenez valider');
+    }
+    
+    // Démarrer le timer de validation
+    function startValidationTimer() {
+      document.getElementById('validationTimer').style.display = 'block';
+      document.getElementById('validateBtn').style.display = 'none';
+      
+      countdownValue = 30;
+      document.getElementById('countdownTimer').textContent = countdownValue;
+      
+      validationTimer = setInterval(() => {
+        countdownValue--;
+        document.getElementById('countdownTimer').textContent = countdownValue;
+        
+        if (countdownValue <= 0) {
+          clearInterval(validationTimer);
+          validationTimer = null;
+          document.getElementById('validateBtn').style.display = 'block';
+          document.getElementById('validationTimer').style.display = 'none';
+          showNotification('Prêt à valider', 'Cliquez sur "J\'ai regardé" pour gagner 200 FCFA');
+        }
+      }, 1000);
+    }
+    
+    // Valider la visionnage d'une vidéo
+    function validateVideoWatched() {
+      if (!currentVideo || watchedVideos.includes(currentVideo.id)) return;
+      
+      if (validationTimer) {
+        showNotification('Patientez', 'Attendez la fin du timer avant de valider');
+        return;
+      }
+      
+      // Mettre à jour les données utilisateur
+      const reward = currentVideo.reward;
+      userData.balance += reward;
+      userData.totalEarned = (userData.totalEarned || 0) + reward;
+      userData.tiktokVideosWatched = (userData.tiktokVideosWatched || 0) + 1;
+      
+      // Mettre à jour les données du jour
+      videosWatchedToday++;
+      watchedVideos.push(currentVideo.id);
+      
+      const todayData = {
+        date: new Date().toDateString(),
+        videosWatched: videosWatchedToday,
+        watchedIds: watchedVideos,
+        earnings: videosWatchedToday * reward
+      };
+      
+      // Sauvegarder
+      localStorage.setItem(`earnzone_user_${userId}`, JSON.stringify(userData));
+      localStorage.setItem(`today_tiktok_data_${userId}`, JSON.stringify(todayData));
+      
+      // Mettre à jour l'interface
+      updateUI();
+      loadVideosList();
+      
+      // Désactiver le bouton
+      document.getElementById('validateBtn').style.display = 'none';
+      document.getElementById('validateBtn').innerHTML = '<i class="fas fa-check"></i> Déjà validé';
+      
+      // Afficher la notification
+      showNotification('Félicitations !', `Vous avez gagné ${reward} FCFA pour cette vidéo TikTok`);
+      
+      // Sélectionner une nouvelle vidéo après 2 secondes
+      setTimeout(() => {
+        selectRandomVideo();
+      }, 2000);
+    }
+    
+    // Passer à la vidéo suivante
+    function skipToNextVideo() {
+      if (!currentVideo) return;
+      
+      const currentIndex = tiktokVideos.findIndex(v => v.id === currentVideo.id);
+      const nextIndex = (currentIndex + 1) % tiktokVideos.length;
+      const nextVideo = tiktokVideos[nextIndex];
+      
+      // Trouver une vidéo non regardée
+      let availableVideo = nextVideo;
+      let attempts = 0;
+      
+      while (watchedVideos.includes(availableVideo.id) && attempts < tiktokVideos.length) {
+        const nextIndex = (tiktokVideos.findIndex(v => v.id === availableVideo.id) + 1) % tiktokVideos.length;
+        availableVideo = tiktokVideos[nextIndex];
+        attempts++;
+      }
+      
+      if (!watchedVideos.includes(availableVideo.id)) {
+        selectVideo(availableVideo);
+      } else {
+        showNotification('Toutes les vidéos sont regardées', 'Revenez demain pour de nouvelles vidéos');
+      }
+    }
+    
+    // Copier le lien TikTok
+    function copyTikTokLink() {
+      if (!currentVideo) return;
+      
+      navigator.clipboard.writeText(currentVideo.url)
+        .then(() => {
+          const copyBtn = document.getElementById('copyLinkBtn');
+          const originalText = copyBtn.innerHTML;
+          
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copié !';
+          copyBtn.style.background = 'var(--success)';
+          
+          setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.background = '';
+          }, 2000);
+          
+          showNotification('Lien copié', 'Collez-le dans TikTok pour regarder la vidéo');
+        })
+        .catch(err => {
+          console.error('Erreur lors de la copie:', err);
+          showNotification('Erreur', 'Impossible de copier le lien');
+        });
+    }
+    
+    // Afficher une notification
+    function showNotification(title, message) {
+      // Créer une notification temporaire
+      const notification = document.createElement('div');
+      notification.className = 'notification show';
+      notification.innerHTML = `
+        <div class="notification-icon">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="notification-content">
+          <h4>${title}</h4>
+          <p>${message}</p>
+        </div>
+      `;
+      
+      // Styles
+      notification.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%) translateY(0);
+        background: rgba(10, 25, 41, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--primary);
+        border-radius: 15px;
+        padding: 20px 25px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        max-width: 90%;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Supprimer après 3 secondes
+      setTimeout(() => {
+        notification.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1)';
+        notification.style.transform = 'translateX(-50%) translateY(100px)';
+        setTimeout(() => notification.remove(), 500);
+      }, 3000);
+    }
+    
+    // Configurer les événements
+    function setupEventListeners() {
+      // Bouton ouvrir TikTok
+      document.getElementById('watchBtn').addEventListener('click', openTikTokVideo);
+      
+      // Bouton valider
+      document.getElementById('validateBtn').addEventListener('click', validateVideoWatched);
+      
+      // Bouton vidéo suivante
+      document.getElementById('skipBtn').addEventListener('click', skipToNextVideo);
+      
+      // Bouton copier lien
+      document.getElementById('copyLinkBtn').addEventListener('click', copyTikTokLink);
+    }
+    
+    // Démarrer l'application
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>

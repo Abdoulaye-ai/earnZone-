@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>EarnZone - Parrainage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ===== VARIABLES GLOBALES ===== */
+    :root {
+      --primary: #00ffcc;
+      --primary-dark: #00cca3;
+      --secondary: #ff4d94;
+      --accent: #9d4edd;
+      --bg-dark: #0a1929;
+      --bg-medium: #132f4c;
+      --bg-light: #1e4a7b;
+      --text-light: #ffffff;
+      --text-dim: #b8d0ff;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --success: #4cff4c;
+      --warning: #ffcc00;
+      --danger: #ff4757;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    }
+
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium), var(--bg-light));
+      background-attachment: fixed;
+      color: var(--text-light);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 100px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 20px 15px;
+      background: rgba(10, 25, 41, 0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .back-btn {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 12px;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateX(-5px);
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-title i {
+      color: var(--primary);
+    }
+
+    .balance-display {
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      border-radius: 15px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ===== CONTENEUR PRINCIPAL ===== */
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== CARTE DE RÉCOMPENSE ===== */
+    .reward-card {
+      background: linear-gradient(135deg, rgba(0, 255, 204, 0.15), rgba(157, 78, 221, 0.15));
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .reward-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .reward-amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+
+    .reward-description {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    /* ===== SECTION LIEN DE PARRAINAGE ===== */
+    .referral-link-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .referral-link-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .link-container {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .link-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .link-input {
+      flex: 1;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: var(--text-light);
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: black;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 255, 204, 0.4);
+    }
+
+    .link-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 5px;
+    }
+
+    /* ===== SECTION PARTAGE ===== */
+    .share-section {
+      margin: 25px 0;
+    }
+
+    .share-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .share-btn {
+      padding: 15px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: var(--text-light);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      background: rgba(0, 255, 204, 0.1);
+    }
+
+    .share-btn.whatsapp { color: #25D366; }
+    .share-btn.facebook { color: #1877F2; }
+    .share-btn.telegram { color: #0088cc; }
+    .share-btn.sms { color: var(--primary); }
+
+    /* ===== SECTION COMMENT PARRAINER ===== */
+    .how-to-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      margin: 25px 0;
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .how-to-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .steps-list {
+      margin-top: 20px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .step-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text-light);
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* ===== SECTION STATISTIQUES ===== */
+    .stats-section {
+      margin: 25px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      border: 1px solid var(--card-border);
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .stat-icon {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .stat-card-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 5px 0;
+    }
+
+    .stat-card-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===== SECTION GAINS POTENTIELS ===== */
+    .potential-earnings {
+      background: linear-gradient(135deg, rgba(0, 255, 204, 0.1), rgba(157, 78, 221, 0.1));
+      border-radius: 20px;
+      padding: 25px;
+      margin: 25px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .earnings-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .earnings-table th {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--primary);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .earnings-table td {
+      padding: 15px 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .earnings-table tr:last-child td { border-bottom: none; }
+    .friend-count { color: var(--primary); font-weight: 600; }
+    .earning-amount { color: var(--success); font-weight: 700; }
+
+    /* ===== BOUTON SIMULATION ===== */
+    .simulate-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--secondary), #ff0066);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .simulate-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 77, 148, 0.4);
+    }
+
+    /* ===== NOTIFICATION - VERSION DISCRÈTE UNIFORME ===== */
+    .notification {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 80%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .notification-icon {
+      font-size: 16px;
+    }
+
+    .notification-success .notification-icon { color: #4cff4c; }
+    .notification-error .notification-icon { color: #ff4757; }
+    .notification-warning .notification-icon { color: #ffcc00; }
+    .notification-info .notification-icon { color: #00ffcc; }
+
+    .notification-content p {
+      font-size: 13px;
+      color: #ffffff;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* ===== BOUTON RETOUR ===== */
+    .quick-back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: black;
+      padding: 16px;
+      border-radius: 15px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 255, 204, 0.4);
+      transition: var(--transition);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .quick-back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 255, 204, 0.6);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .container { padding: 15px; }
+      .header { padding: 15px; }
+      .page-title { font-size: 18px; }
+      .share-buttons { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .link-display { flex-direction: column; }
+      .copy-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+      Retour
+    </a>
+    <div class="page-title">
+      <i class="fas fa-user-friends"></i>
+      Parrainage
+    </div>
+    <div class="balance-display">
+      <i class="fas fa-coins"></i>
+      <span id="currentBalance">0 FCFA</span>
+    </div>
+  </header>
+
+  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <div class="container">
+    
+    <!-- CARTE DE RÉCOMPENSE -->
+    <div class="reward-card">
+      <div class="reward-icon">
+        <i class="fas fa-gift"></i>
+      </div>
+      <h2 style="color: var(--text-light); margin-bottom: 10px;">Gagnez 500 FCFA</h2>
+      <div class="reward-amount">par ami parrainé</div>
+      <p class="reward-description">
+        Invitez vos amis à rejoindre EarnZone et gagnez <strong style="color: var(--primary);">500 FCFA</strong> 
+        pour chaque inscription réussie. Pas de limite sur le nombre d'amis !
+      </p>
+    </div>
+    
+    <!-- SECTION LIEN DE PARRAINAGE -->
+    <section class="referral-link-section">
+      <h3 class="section-title">
+        <i class="fas fa-link"></i>
+        Votre lien de parrainage
+      </h3>
+      <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 15px;">
+        Partagez ce lien unique avec vos amis. Quand ils s'inscrivent avec ce lien, vous gagnez 500 FCFA !
+      </p>
+      
+      <div class="link-container">
+        <div class="link-display">
+          <input type="text" class="link-input" id="referralLink" readonly value="Chargement...">
+          <button class="copy-btn" id="copyLinkBtn">
+            <i class="fas fa-copy"></i>
+            Copier
+          </button>
+        </div>
+        
+        <div class="link-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="friendsCount">0</div>
+            <div class="stat-label">Amis parrainés</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="referralEarnings">0</div>
+            <div class="stat-label">FCFA gagnés</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="pendingEarnings">0</div>
+            <div class="stat-label">En attente</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SECTION PARTAGE -->
+    <section class="share-section">
+      <h3 class="section-title">
+        <i class="fas fa-share-alt"></i>
+        Partager rapidement
+      </h3>
+      
+      <div class="share-buttons">
+        <button class="share-btn whatsapp" id="whatsappBtn">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button class="share-btn facebook" id="facebookBtn">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
+        <button class="share-btn telegram" id="telegramBtn">
+          <i class="fab fa-telegram"></i> Telegram
+        </button>
+        <button class="share-btn sms" id="smsBtn">
+          <i class="fas fa-sms"></i> SMS
+        </button>
+      </div>
+    </section>
+    
+    <!-- SECTION COMMENT PARRAINER -->
+    <section class="how-to-section">
+      <h3 class="section-title">
+        <i class="fas fa-graduation-cap"></i>
+        Comment parrainer ?
+      </h3>
+      
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Copiez votre lien</h4>
+            <p>Copiez votre lien de parrainage unique ci-dessus</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Partagez avec vos amis</h4>
+            <p>Envoyez le lien par WhatsApp, Facebook, SMS ou autre</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Vos amis s'inscrivent</h4>
+            <p>Ils doivent utiliser votre lien pour créer leur compte</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Recevez 500 FCFA</h4>
+            <p>Dès qu'ils valident leur inscription, vous gagnez 500 FCFA</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SECTION STATISTIQUES -->
+    <section class="stats-section">
+      <h3 class="section-title">
+        <i class="fas fa-chart-bar"></i>
+        Vos statistiques
+      </h3>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-user-friends"></i></div>
+          <div class="stat-card-value" id="totalReferrals">0</div>
+          <div class="stat-card-label">Total parrainages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+          <div class="stat-card-value" id="totalReferralEarnings">0</div>
+          <div class="stat-card-label">FCFA gagnés</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+          <div class="stat-card-value" id="referralRank">#1</div>
+          <div class="stat-card-label">Votre classement</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+          <div class="stat-card-value" id="todayReferrals">0</div>
+          <div class="stat-card-label">Aujourd'hui</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SECTION GAINS POTENTIELS -->
+    <section class="potential-earnings">
+      <h3 class="section-title">
+        <i class="fas fa-chart-line"></i>
+        Gains potentiels
+      </h3>
+      <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 15px;">
+        Voyez combien vous pouvez gagner selon le nombre d'amis parrainés :
+      </p>
+      
+      <table class="earnings-table">
+        <thead>
+          <tr><th>Nombre d'amis</th><th>Gains totaux</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="friend-count">5 amis</td><td class="earning-amount">2 500 FCFA</td></tr>
+          <tr><td class="friend-count">10 amis</td><td class="earning-amount">5 000 FCFA</td></tr>
+          <tr><td class="friend-count">20 amis</td><td class="earning-amount">10 000 FCFA</td></tr>
+          <tr><td class="friend-count">50 amis</td><td class="earning-amount">25 000 FCFA</td></tr>
+        </tbody>
+      </table>
+    </section>
+    
+   
+    
+  </div>
+
+  <!-- ===== BOUTON RETOUR RAPIDE ===== -->
+  <a href="index.html" class="quick-back-btn">
+    <i class="fas fa-home"></i>
+    Retour à l'accueil
+  </a>
+
+  <script>
+    // ============================================
+    // DONNÉES UTILISATEUR
+    // ============================================
+    let userData = null;
+    let userId = null;
+    
+    // Variables parrainage
+    let referralLink = "";
+    let friendsCount = 0;
+    let referralEarnings = 0;
+    
+    // ============================================
+    // INITIALISATION
+    // ============================================
+    function init() {
+      loadUserData();
+      setupEventListeners();
+    }
+    
+    // ============================================
+    // CHARGER LES DONNÉES UTILISATEUR
+    // ============================================
+    function loadUserData() {
+      userId = localStorage.getItem('earnzone_current_user');
+      
+      if (!userId) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      const userDataStr = localStorage.getItem(`earnzone_user_${userId}`);
+      
+      if (userDataStr) {
+        userData = JSON.parse(userDataStr);
+        updateUI();
+        generateReferralLink();
+        loadReferralStats();
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+    
+    // ============================================
+    // METTRE À JOUR L'INTERFACE
+    // ============================================
+    function updateUI() {
+      if (!userData) return;
+      
+      document.getElementById('currentBalance').textContent = userData.balance.toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('totalReferrals').textContent = userData.referrals || 0;
+      document.getElementById('totalReferralEarnings').textContent = (userData.referralEarnings || 0) + ' FCFA';
+      document.getElementById('todayReferrals').textContent = userData.todayReferrals || 0;
+    }
+    
+    // ============================================
+    // GÉNÉRER LE LIEN DE PARRAINAGE
+    // ============================================
+    function generateReferralLink() {
+      if (!userData) return;
+      
+      const referralCode = btoa(userId).replace(/=/g, '').substring(0, 10);
+      referralLink = `https://earnzone.com/register?ref=${referralCode}`;
+      document.getElementById('referralLink').value = referralLink;
+      
+      userData.referralCode = referralCode;
+      localStorage.setItem(`earnzone_user_${userId}`, JSON.stringify(userData));
+    }
+    
+    // ============================================
+    // CHARGER LES STATISTIQUES DE PARRAINAGE
+    // ============================================
+    function loadReferralStats() {
+      const referralData = JSON.parse(localStorage.getItem(`referral_data_${userId}`)) || {
+        friendsCount: 0,
+        referralEarnings: 0,
+        pendingEarnings: 0,
+        referredUsers: []
+      };
+      
+      friendsCount = referralData.friendsCount;
+      referralEarnings = referralData.referralEarnings;
+      
+      document.getElementById('friendsCount').textContent = friendsCount;
+      document.getElementById('referralEarnings').textContent = referralEarnings;
+      document.getElementById('pendingEarnings').textContent = referralData.pendingEarnings;
+      
+      updateReferralRank();
+    }
+    
+    // ============================================
+    // METTRE À JOUR LE CLASSEMENT
+    // ============================================
+    function updateReferralRank() {
+      const rank = Math.max(1, Math.floor(Math.random() * 100) + 1);
+      document.getElementById('referralRank').textContent = `#${rank}`;
+    }
+    
+    // ============================================
+    // COPIER LE LIEN DE PARRAINAGE
+    // ============================================
+    function copyReferralLink() {
+      if (!referralLink) return;
+      
+      navigator.clipboard.writeText(referralLink)
+        .then(() => {
+          const copyBtn = document.getElementById('copyLinkBtn');
+          const originalText = copyBtn.innerHTML;
+          
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copié !';
+          copyBtn.style.background = 'linear-gradient(135deg, var(--success), #00cc44)';
+          
+          setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.background = '';
+          }, 2000);
+          
+          showNotification('✅ Lien copié !', 'Partagez-le avec vos amis pour gagner 500 FCFA', 'success');
+        })
+        .catch(() => {
+          showNotification('❌ Erreur', 'Impossible de copier le lien', 'error');
+        });
+    }
+    
+    // ============================================
+    // PARTAGER SUR WHATSAPP
+    // ============================================
+    function shareOnWhatsApp() {
+      if (!referralLink) return;
+      const message = `💰 Rejoins EarnZone et commence à gagner de l'argent avec moi ! Utilise mon lien de parrainage pour obtenir 200 FCFA offerts : ${referralLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+      showNotification('📱 WhatsApp', 'Partagez le lien avec vos contacts', 'info');
+    }
+    
+    // ============================================
+    // PARTAGER SUR FACEBOOK
+    // ============================================
+    function shareOnFacebook() {
+      if (!referralLink) return;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}&quote=Rejoins EarnZone et gagne de l'argent avec moi !`, '_blank');
+      showNotification('📘 Facebook', 'Partagez sur votre profil', 'info');
+    }
+    
+    // ============================================
+    // PARTAGER SUR TELEGRAM
+    // ============================================
+    function shareOnTelegram() {
+      if (!referralLink) return;
+      const message = `💰 Rejoins EarnZone et commence à gagner de l'argent avec moi ! Utilise mon lien de parrainage : ${referralLink}`;
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(message)}`, '_blank');
+      showNotification('📨 Telegram', 'Envoyez à vos groupes', 'info');
+    }
+    
+    // ============================================
+    // PARTAGER PAR SMS
+    // ============================================
+    function shareBySMS() {
+      if (!referralLink) return;
+      const message = `Rejoins EarnZone et gagne de l'argent avec moi ! Lien : ${referralLink}`;
+      window.location.href = `sms:?body=${encodeURIComponent(message)}`;
+      showNotification('📱 SMS', 'Partagez avec vos contacts', 'info');
+    }
+    
+    // ============================================
+    // SIMULER UN PARRAINAGE
+    // ============================================
+    function simulateReferral() {
+      const reward = 500;
+      
+      userData.balance += reward;
+      userData.totalEarned = (userData.totalEarned || 0) + reward;
+      userData.referrals = (userData.referrals || 0) + 1;
+      userData.referralEarnings = (userData.referralEarnings || 0) + reward;
+      
+      const referralData = JSON.parse(localStorage.getItem(`referral_data_${userId}`)) || {
+        friendsCount: 0,
+        referralEarnings: 0,
+        pendingEarnings: 0,
+        referredUsers: []
+      };
+      
+      referralData.friendsCount += 1;
+      referralData.referralEarnings += reward;
+      referralData.referredUsers.push({
+        id: 'friend_' + Date.now(),
+        date: new Date().toISOString(),
+        reward: reward,
+        status: 'confirmed'
+      });
+      
+      localStorage.setItem(`earnzone_user_${userId}`, JSON.stringify(userData));
+      localStorage.setItem(`referral_data_${userId}`, JSON.stringify(referralData));
+      
+      updateUI();
+      loadReferralStats();
+      
+      showNotification('🎉 +500 FCFA !', 'Parrainage réussi', 'success');
+      
+      const simulateBtn = document.getElementById('simulateBtn');
+      simulateBtn.innerHTML = '<i class="fas fa-check-circle"></i> PARRAINAGE RÉUSSI !';
+      simulateBtn.style.background = 'linear-gradient(135deg, var(--success), #00cc44)';
+      
+      setTimeout(() => {
+        simulateBtn.innerHTML = '<i class="fas fa-user-plus"></i> SIMULER UN PARRAINAGE (+500 FCFA)';
+        simulateBtn.style.background = '';
+      }, 2000);
+    }
+    
+    // ============================================
+    // NOTIFICATION - VERSION DISCRÈTE UNIFORME
+    // ============================================
+    function showNotification(title, message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type === 'error' ? 'notification-error' : type === 'warning' ? 'notification-warning' : type === 'info' ? 'notification-info' : 'notification-success'} show`;
+      
+      let icon = 'check-circle';
+      if (type === 'error') icon = 'exclamation-circle';
+      else if (type === 'warning') icon = 'exclamation-triangle';
+      else if (type === 'info') icon = 'info-circle';
+      
+      notification.innerHTML = `
+        <div class="notification-icon">
+          <i class="fas fa-${icon}"></i>
+        </div>
+        <div class="notification-content">
+          <p style="margin:0;"><strong>${title}</strong> ${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.transform = 'translateX(-50%) translateY(100px)';
+        setTimeout(() => notification.remove(), 300);
+      }, 2500);
+    }
+    
+    // ============================================
+    // CONFIGURER LES ÉVÉNEMENTS
+    // ============================================
+    function setupEventListeners() {
+      document.getElementById('copyLinkBtn').addEventListener('click', copyReferralLink);
+      document.getElementById('whatsappBtn').addEventListener('click', shareOnWhatsApp);
+      document.getElementById('facebookBtn').addEventListener('click', shareOnFacebook);
+      document.getElementById('telegramBtn').addEventListener('click', shareOnTelegram);
+      document.getElementById('smsBtn').addEventListener('click', shareBySMS);
+      document.getElementById('simulateBtn').addEventListener('click', simulateReferral);
+    }
+    
+    // ============================================
+    // DÉMARRER L'APPLICATION
+    // ============================================
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>
